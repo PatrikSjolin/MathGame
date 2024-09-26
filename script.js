@@ -133,6 +133,7 @@ function generateQuestion() {
                 break;
         }
     }
+	update();
 }
 
 function checkAnswer() {
@@ -160,7 +161,6 @@ function advanceLevel() {
     currentLevel++;
     document.getElementById('level').textContent = currentLevel;
     generateQuestion();
-	update();
 }
 
 function update(){
@@ -179,12 +179,10 @@ function factorial(n) {
 document.getElementById('answer').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         checkAnswer();
-		update();
     }
 });
 
 document.addEventListener("DOMContentLoaded", function() {
     // Initialize the first question
     generateQuestion();
-	update();
 });
