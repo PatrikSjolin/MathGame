@@ -5,18 +5,21 @@ let currentQuestion, correctAnswer;
 function generateQuestion() {
     let num1, num2, num3, operation;
 
-    // Adjusting difficulty to control answer size, decimal, and negativity
+    // Difficulty control with more levels and smaller terms in the beginning
     const levelConfig = {
-        1: { maxNum: 10, operations: ['+'] },                    // Simple addition
-        2: { maxNum: 20, operations: ['+', '-'] },               // Addition and subtraction
-        3: { maxNum: 10, operations: ['+', '-', '*'] },          // Add multiplication
-        4: { maxNum: 50, operations: ['+', '-', '*', '/'] },     // Add division
-        5: { maxNum: 100, operations: ['+', '-', '*', '/', '%'] }, // Add percentages
-        6: { maxNum: 20, operations: ['+', '-', '*', '/', 'sqrt', 'X'] }, // Variables and square roots
-        7: { maxNum: 50, operations: ['+', '-', '*', '/', '%', 'sqrt', 'X', '^', '()'] } // Power and parentheses
+        1: { maxNum: 5, operations: ['+'] },                    // Small addition
+        2: { maxNum: 10, operations: ['+', '-'] },              // Addition and subtraction
+        3: { maxNum: 20, operations: ['+', '-', '*'] },         // Add multiplication
+        4: { maxNum: 20, operations: ['+', '-', '*', '/'] },    // Add division
+        5: { maxNum: 20, operations: ['+', '-', '*', '/', '%'] },// Add percentages
+        6: { maxNum: 10, operations: ['+', '-', '*', '/', 'sqrt', 'X'] }, // Add square roots and variables
+        7: { maxNum: 20, operations: ['+', '-', '*', '/', '%', 'sqrt', 'X'] }, // Slightly larger numbers with square roots and variables
+        8: { maxNum: 30, operations: ['+', '-', '*', '/', '%', '^', '()'] }, // Add exponentiation and parentheses
+        9: { maxNum: 50, operations: ['+', '-', '*', '/', '%', '^', 'sqrt', 'X', '()'] }, // Larger numbers with all operations
+        10: { maxNum: 100, operations: ['+', '-', '*', '/', '%', '^', 'sqrt', 'X', '()'] } // More complex and larger numbers
     };
 
-    const config = levelConfig[Math.min(currentLevel, 7)];
+    const config = levelConfig[Math.min(currentLevel, 10)];
     let terms = [];
 
     // Generate equation with more terms as difficulty increases
@@ -28,28 +31,27 @@ function generateQuestion() {
 
     operation = config.operations[Math.floor(Math.random() * config.operations.length)];
 
-    // Limitations on answer types
+    // Smaller terms and controlled answer size
     if (operation === 'sqrt') {
-        // Square root questions with a perfect square
-        num1 = Math.floor(Math.random() * config.maxNum);
-        num1 = num1 * num1; // Make sure we only use perfect squares
-        correctAnswer = Math.sqrt(num1).toFixed(2);
-        currentQuestion = `√${num1}`;
+        // Square root of perfect squares
+        num1 = Math.floor(Math.random() * Math.sqrt(config.maxNum));
+        correctAnswer = Math.sqrt(num1 * num1);
+        currentQuestion = `√${num1 * num1}`;
     } else if (operation === '%') {
-        // Limit percentage to multiples of 10, 25, 50, and 100
+        // Start percentages with 10, 25, 50, 100, and then multiples of 10
         let allowedPercentages = [10, 25, 50, 100, 20, 30, 40, 60, 70, 80, 90];
         num1 = allowedPercentages[Math.floor(Math.random() * allowedPercentages.length)];
         num2 = Math.floor(Math.random() * config.maxNum);
         correctAnswer = (num1 * (num2 / 100)).toFixed(2);
         currentQuestion = `${num1}% of ${num2}`;
     } else if (operation === 'X') {
-        // Solve for X questions
+        // Solve for X equations
         num1 = Math.floor(Math.random() * config.maxNum);
         num2 = Math.floor(Math.random() * config.maxNum);
         correctAnswer = num1;
         currentQuestion = `X + ${num2} = ${num1 + num2}`;
     } else if (operation === '()') {
-        // Parentheses questions
+        // Parentheses operation
         num1 = Math.floor(Math.random() * config.maxNum);
         num2 = Math.floor(Math.random() * config.maxNum);
         num3 = Math.floor(Math.random() * config.maxNum);
@@ -62,7 +64,7 @@ function generateQuestion() {
         correctAnswer = Math.pow(num1, num2);
         currentQuestion = `${num1} ^ ${num2}`;
     } else {
-        // Default operations with small numbers to avoid overly large results
+        // Default operations with smaller numbers
         switch (operation) {
             case '+':
                 correctAnswer = terms.reduce((a, b) => a + b);
@@ -70,7 +72,7 @@ function generateQuestion() {
                 break;
             case '-':
                 correctAnswer = terms.reduce((a, b) => a - b);
-                correctAnswer = Math.max(0, correctAnswer); // Avoid negative answers
+                correctAnswer = Math.max(0, correctAnswer); // Avoid negative answers in basic subtraction
                 currentQuestion = terms.join(' - ');
                 break;
             case '*':
@@ -126,11 +128,6 @@ document.getElementById('answer').addEventListener('keydown', function(event) {
         checkAnswer();
     }
 });
-
-// Factorial function (for later use if needed)
-function factorial(n) {
-    return n <= 1 ? 1 : n * factorial(n - 1);
-}
 
 // Initialize the first question
 generateQuestion();
