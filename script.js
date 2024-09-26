@@ -10,13 +10,11 @@ const translations = {
         question: "What is",
         correct: "Correct!",
         incorrect: "Incorrect, the correct answer was",
-        level: "Level"
     },
     sv: {
         question: "Vad är",
         correct: "Korrekt!",
         incorrect: "Fel, det rätta svaret var",
-        level: "Nivå"
     }
 };
 
