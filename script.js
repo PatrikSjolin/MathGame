@@ -22,14 +22,15 @@ function generateQuestion() {
     const config = levelConfig[Math.min(currentLevel, 10)];
     let terms = [];
 
-    // Generate terms based on the level and operator type
+    // Select the operation first to ensure the correct maxNum is used
+    operation = config.operations[Math.floor(Math.random() * config.operations.length)];
+
+    // Generate the terms based on the current operator and level configuration
     let numberOfTerms = config.terms;
 
     for (let i = 0; i < numberOfTerms; i++) {
         terms.push(Math.floor(Math.random() * config.maxNum[operation]));
     }
-
-    operation = config.operations[Math.floor(Math.random() * config.operations.length)];
 
     let answerMin = config.answerRange[0];
     let answerMax = config.answerRange[1];
