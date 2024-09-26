@@ -187,13 +187,20 @@ function advanceLevel() {
     generateQuestion();
 }
 
-function update(){
-	document.getElementById('question').textContent = `${translations[language].question} ${currentQuestion}?`;
-    document.getElementById('answer').value = '';
-    document.getElementById('result').textContent = '';
+function update() {
+    // Separate the question into an instruction and the actual operation
+    let instruction = translations[language].question; // "What is" or "Vad är"
+    let mathExpression = currentQuestion;  // The actual numbers and operators
+
+    // Update the DOM
+    document.getElementById('instruction').textContent = `${instruction}`;  // First row with instruction
+    document.getElementById('math-expression').textContent = mathExpression;  // Second row with numbers and operators
+    document.getElementById('answer').value = '';  // Reset the input field
+    document.getElementById('result').textContent = '';  // Clear previous result
     document.getElementById('answer').focus();  // Auto-focus input field
-    document.getElementById('level').textContent = currentLevel;  // Display current level
+    document.getElementById('level').textContent = currentLevel;  // Update the current level
 }
+
 
 function factorial(n) {
     return n <= 1 ? 1 : n * factorial(n - 1);
