@@ -64,11 +64,11 @@ function generateQuestion() {
 		9: { minNum: { '/': 2 }, maxNum: { '/': 20 }, operations: ['/'], answerRange: [0, 50], allowDecimalAnswer: false, terms: 2 },  // Add division
 		10: { minNum: { '+': 1, '-': 1, '*': 1, '/': 2, 'X': 1 }, maxNum: { '+': 15, '-': 15, '*': 10, '/': 20, 'X': 10 }, operations: ['+', '-', '*', '/', 'X'], answerRange: [0, 50], allowDecimalAnswer: false, terms: 3 },  // Doing X for more operators
 		11: { minNum: {'-': 1 }, maxNum: { '-': 10 }, operations: ['-'], answerRange: [-10, -1], allowDecimalAnswer: false, terms: 2 },  // Add division
-        12: { minNum: { '+': 2, '-': 2, '*': 1, '/': 1, 'X': 1 }, maxNum: { '+': 20, '-': 20, '*': 10, '/': 10, 'X': 10 }, operations: ['+', '-', '*', '/', 'X'], answerRange: [0, 50], allowDecimalAnswer: false, terms: 3 },  // Add solving for 'X'
+        12: { minNum: { '+': 2, '-': 2, '*': 1, '/': 1, 'X': 1 }, maxNum: { '+': 20, '-': 20, '*': 10, '/': 10, 'X': 10 }, operations: ['+', '-', '*', '/', 'X'], answerRange: [-20, 50], allowDecimalAnswer: false, terms: 3 },  // Add solving for 'X'
         13: { minNum: { '%': 2 }, maxNum: { '%': 30 }, operations: ['%'], answerRange: [0, 100], allowDecimalAnswer: false, terms: 3 },  // Add percentages
         14: { minNum: { '+': 5, '-': 5, '*': 2, '/': 2, 'X': 3, '%': 3 }, maxNum: { '+': 50, '-': 50, '*': 20, '/': 20, 'X': 30, '%': 40 }, operations: ['+', '-', '*', '/', 'X', '%',], answerRange: [0, 100], allowDecimalAnswer: false, terms: 3 },  // Add square roots
-        15: { minNum: { 'X': 4, '%': 5, 'sqrt': 4 }, maxNum: { 'X': 40, '%': 50, 'sqrt': 40 }, operations: ['X', '%', 'sqrt'], answerRange: [0, 100], allowDecimalAnswer: false, terms: 2 },  // Reintroduce factorial
-		16: { minNum: { 'sqrt': 10 }, maxNum: { 'sqrt': 100 }, operations: ['sqrt'], answerRange: [0, 100], allowDecimalAnswer: false, terms: 2 },  // Reintroduce factorial
+        15: { minNum: { 'X': 4, '%': 5, 'sqrt': 3 }, maxNum: { 'X': 40, '%': 50, 'sqrt': 20 }, operations: ['X', '%', 'sqrt'], answerRange: [0, 100], allowDecimalAnswer: false, terms: 2 },  // Reintroduce factorial
+		16: { minNum: { 'sqrt': 3 }, maxNum: { 'sqrt': 20 }, operations: ['sqrt'], answerRange: [0, 100], allowDecimalAnswer: false, terms: 2 },  // Reintroduce factorial
         17: { minNum: { '*': 3, '!': 2 }, maxNum: { '*': 12, '!': 4 }, operations: ['*', '!'], answerRange: [-100, 100], allowDecimalAnswer: false, terms: 4 },  // Add exponentiation, allow negatives
         18: { minNum: {'+': 10, '^': 2 }, maxNum: { '+': 100, '^': 5 }, operations: ['+', '^'], answerRange: [-100, 100], allowDecimalAnswer: false, terms: 4 },  // Add parentheses with more complex terms
     };
@@ -76,6 +76,7 @@ function generateQuestion() {
 	const levelCount = Object.keys(levelConfig).length;
     const config = levelConfig[Math.min(currentLevel, levelCount)];
 	let terms = [];
+    let operators = [];
 
     // Select the operation first to ensure the correct maxNum is used
     operation = config.operations[Math.floor(Math.random() * config.operations.length)];
@@ -88,41 +89,42 @@ function generateQuestion() {
 	
 	do {
 		terms = [];
+		operators = [];
+		
 	    for (let i = 0; i < numberOfTerms; i++) {
 			let min = config.minNum[operation] || 0;  // Default to 0 if no minNum is defined
             let max = config.maxNum[operation] || 10; // Default to 10 if no maxNum is defined
             let term = Math.floor(Math.random() * (max - min + 1)) + min;  // Generate a term within the min/max range
             terms.push(term);
+			operators.push(config.operations[Math.floor(Math.random() * config.operations.length)]);
 		}
 	
 		if (operation === 'sqrt') {
 			// Square root of perfect squares
-			num1 = Math.floor(Math.random() * Math.sqrt(config.maxNum['sqrt']));
+			num1 = Math.floor(Math.random() * terms[0]);
 			correctAnswer = Math.sqrt(num1 * num1);
 			currentQuestion = `√${num1 * num1}`;
 		} else if (operation === '%') {
 			// Percentages
 			let allowedPercentages = [10, 25, 50, 100, 20, 30, 40, 60, 70, 80, 90];
-			do {
-				num1 = allowedPercentages[Math.floor(Math.random() * allowedPercentages.length)];
-				num2 = Math.floor(Math.random() * config.maxNum['%']);
-				correctAnswer = (num1 * (num2 / 100));
-				currentQuestion = `${num1}% of ${num2}`;
-			} while(!config.allowDecimalAnswer && !Number.isInteger(correctAnswer));
+			num1 = allowedPercentages[Math.floor(Math.random() * allowedPercentages.length)];
+			num2 = terms[0];
+			correctAnswer = (num1 * (num2 / 100));
+			currentQuestion = `${num1}% of ${num2}`;
 		} else if (operation === 'X') {
 			// Solve for X equations
-			num1 = Math.floor(Math.random() * config.maxNum['X']);
-			num2 = Math.floor(Math.random() * config.maxNum['X']);
+			num1 = terms[0];
+			num2 = terms[1];
 			correctAnswer = num1;
 			currentQuestion = `X + ${num2} = ${num1 + num2}`;
 		} else if (operation === '!') {
 			// Factorials
-			num1 = Math.floor(Math.random() * config.maxNum['!']) + 1;
+			num1 = terms[0];
 			correctAnswer = factorial(num1);
 			currentQuestion = `${num1}!`;
 		} else if (operation === '^') {
 			// Exponentiation
-			num1 = Math.floor(Math.random() * config.maxNum['^']) + 1;
+			num1 = terms[0];
 			num2 = Math.floor(Math.random() * 3) + 1;
 			correctAnswer = Math.pow(num1, num2);
 			currentQuestion = `${num1} ^ ${num2}`;
@@ -143,12 +145,10 @@ function generateQuestion() {
 					currentQuestion = `${num1} * ${num2}`;
 					break;
 				case '/':
-					
-						num1 = terms[0];
-						num2 = terms[1] || 1;
-						correctAnswer = (num1 / num2);
-						currentQuestion = `${num1} / ${num2}`;
-					
+					num1 = terms[0];
+					num2 = terms[1] || 1;
+					correctAnswer = (num1 / num2);
+					currentQuestion = `${num1} / ${num2}`;
 					break;
 			}
 		}
