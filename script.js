@@ -1,8 +1,9 @@
-//import { factorial } from './math.js'; 
-
 let currentLevel = 1;
 let correctStreak = 0;
 let currentQuestion, correctAnswer;
+
+// Default language is English
+let language = "en";
 
 // Translations for English and Swedish
 const translations = {
@@ -24,9 +25,6 @@ const translations = {
     }
 };
 
-// Default language is English
-let language = "en";
-
 // Function to switch languages
 function changeLanguage(selectedLanguage) {
     language = selectedLanguage;
@@ -37,18 +35,18 @@ function generateDebugAnswers() {
     let outputDiv = document.getElementById('debug-output');
     outputDiv.innerHTML = ''; // Clear previous output
 
-    for (let level = 1; level <= 12; level++) {
+    for (let level = 1; level <= 14; level++) {
         currentLevel = level;  // Set the current level
         outputDiv.innerHTML += `<h3>Level ${level}</h3>`; // Display level heading
-        
-        for (let i = 0; i < 5; i++) {
+        console.log(`NEW LEVEL ${currentLevel}`);
+		setTimeout(2000);
+        for (let i = 0; i < 10; i++) {
             generateQuestion();  // Generate a question for the current level
             // Append the question and its answer to the output div
-            outputDiv.innerHTML += `<p>Question ${i + 1}: ${currentQuestion}, Answer: ${correctAnswer}</p>`;
+            outputDiv.innerHTML += `<p>${currentQuestion}, Answer: ${correctAnswer}</p>`;
         }
     }
 }
-
 
 function generateQuestion() {
     let num1, num2, num3, operation;
@@ -60,18 +58,19 @@ function generateQuestion() {
         3: { maxNum: { '+': 10, '-': 6 }, operations: ['+', '-'], answerRange: [0, 15], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add more terms and subtraction (no negatives)
         4: { maxNum: { '+': 12, '-': 10 }, operations: ['+', '-'], answerRange: [0, 20], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add multiplication with small numbers
 		5: { maxNum: { '+': 12, '*': 3 }, operations: ['+', '*'], answerRange: [0, 20], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add multiplication with small numbers
-		6: { maxNum: { 'X': 10 }, operations: ['+', 'X'], answerRange: [0, 20], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Introducing X
-        7: { maxNum: { '+': 15, '-': 15, '*': 10 }, operations: ['+', '-', '*', '/'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add division
-		8: { maxNum: { '*': 10, '/': 5 }, operations: ['*', '/'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add division
+		6: { maxNum: { 'X': 10 }, operations: ['X'], answerRange: [0, 20], allowNegative: false, allowDecimalAnswer: false, terms: 2 },  // Introducing X
+        7: { maxNum: { '*': 10, '/': 5 }, operations: ['*', '/'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 2 },  // Add division
+		8: { maxNum: { '+': 15, '-': 15, '*': 10, '/': 20 }, operations: ['+', '-', '*', '/'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add division
         9: { maxNum: { '+': 20, '-': 20, '*': 10, '/': 10, 'X': 10 }, operations: ['+', '-', '*', '/', 'X'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add solving for 'X'
         10: { maxNum: { '+': 30, '-': 30, '*': 15, '/': 15, 'X': 20, '%': 20 }, operations: ['+', '-', '*', '/', 'X', '%'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add percentages
         11: { maxNum: { '+': 50, '-': 50, '*': 20, '/': 20, 'X': 30, '%': 30 }, operations: ['+', '-', '*', '/', 'X', '%',], answerRange: [0, 100], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add square roots
         12: { maxNum: { '+': 100, '-': 100, '*': 30, '/': 30, 'X': 40, '%': 50, 'sqrt': 100, '!' : 3}, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!'], answerRange: [0, 100], allowNegative: false, allowDecimalAnswer: false, terms: 4 },  // Reintroduce factorial
-        13: { maxNum: { '+': 100, '-': 100, '*': 50, '/': 50, 'X': 50, '%': 50, 'sqrt': 100, '!': 4 }, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!', '^'], answerRange: [-100, 100], allowNegative: true, allowDecimalAnswer: false, terms: 4 },  // Add exponentiation, allow negatives
-        14: { maxNum: { '+': 100, '-': 100, '*': 100, '/': 100, 'X': 50, '%': 50, 'sqrt': 100, '!': 5, '^': 5 }, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!', '^', '()'], answerRange: [-100, 100], allowNegative: true, allowDecimalAnswer: false, terms: 4 },  // Add parentheses with more complex terms
+        13: { maxNum: { '+': 100, '-': 100, '*': 50, '/': 50, 'X': 50, '%': 50, 'sqrt': 100, '!': 4, '^': 4 }, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!', '^'], answerRange: [-100, 100], allowNegative: true, allowDecimalAnswer: false, terms: 4 },  // Add exponentiation, allow negatives
+        14: { maxNum: { '+': 100, '-': 100, '*': 100, '/': 100, 'X': 50, '%': 50, 'sqrt': 100, '!': 5, '^': 5 }, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!', '^'], answerRange: [-100, 100], allowNegative: true, allowDecimalAnswer: false, terms: 4 },  // Add parentheses with more complex terms
     };
-
-    const config = levelConfig[Math.min(currentLevel, 10)];
+	
+	const levelCount = Object.keys(levelConfig).length;
+    const config = levelConfig[Math.min(currentLevel, levelCount)];
 	let terms = [];
 
     // Select the operation first to ensure the correct maxNum is used
@@ -174,8 +173,8 @@ function checkAnswer() {
         correctStreak++;
         document.getElementById('result').textContent = 'Correct!';
 
-        // Increase level every 5 correct answers
-        if (correctStreak >= 5) {
+        // Increase level every 4 correct answers
+        if (correctStreak >= 4) {
             currentLevel++;
             correctStreak = 0;
         }

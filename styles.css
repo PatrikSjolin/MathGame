@@ -74,18 +74,22 @@ input {
     appearance: none;
 }
 
-.result {
-    margin-top: 20px;
-    font-size: 24px;  /* Larger result text */
-    color: #ffcc00;  /* Bright color for results */
-}
-
 button {
     background-color: #4CAF50;  /* Green button */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.result {
+    margin-top: 20px;
+    font-size: 24px;  /* Larger result text */
+    color: #ffcc00;  /* Bright color for results */
 }
 
 #instruction {
@@ -97,10 +101,6 @@ button {
 #math-expression {
     font-size: 28px;  /* Larger font size for the math expression */
     color: #ffcc00;  /* Bright color for the math expression */
-}
-
-button:hover {
-    background-color: #45a049;
 }
 
 #debug-output {
