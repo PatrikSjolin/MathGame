@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Math Learning</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1>Smart Math Learning</h1>
+<div class="info">
+    <p>Level: <span id="level">1</span></p>
+</div>
+<div class="question-box">
+    <p id="question"></p>
+    <input type="number" id="answer" placeholder="Your answer">
+    <button onclick="checkAnswer()">Submit</button>
+    <button onclick="advanceLevel()">Debug: Advance Level</button>
+    <p class="result" id="result"></p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
