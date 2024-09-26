@@ -3,23 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Math Learning</title>
+    <title>Math Learning Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<h1>Smart Math Learning</h1>
+<h1>Math Learning Game</h1>
+
+<!-- Styled Language Selector -->
+<div class="language-selector">
+    <label for="language-select">Choose language:</label>
+    <select id="language-select" onchange="changeLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="sv">Swedish</option>
+    </select>
+</div>
+
 <div class="info">
     <p>Level: <span id="level">1</span></p>
 </div>
+
 <div class="question-box">
     <p id="question"></p>
     <input type="number" id="answer" placeholder="Your answer">
     <button onclick="checkAnswer()">Submit</button>
-    <!--button onclick="advanceLevel()">Debug: Advance Level</button-->
+    <button onclick="advanceLevel()">Debug: Advance Level</button>
     <p class="result" id="result"></p>
 </div>
 
-	<script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

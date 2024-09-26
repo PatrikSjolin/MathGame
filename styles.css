@@ -9,6 +9,23 @@ h1 {
     margin-top: 20px;
 }
 
+.language-selector {
+    margin-bottom: 20px;
+}
+
+.language-selector label {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.language-selector select {
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .info {
     margin-bottom: 20px;
 }
