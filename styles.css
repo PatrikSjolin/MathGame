@@ -61,3 +61,20 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+#debug-output {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+#debug-output h3 {
+    margin-top: 20px;
+    color: #333;
+}
+
+#debug-output p {
+    font-size: 16px;
+    margin: 5px 0;
+}
