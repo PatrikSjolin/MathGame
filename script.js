@@ -10,11 +10,17 @@ const translations = {
         question: "What is",
         correct: "Correct!",
         incorrect: "Incorrect, the correct answer was",
+        solveX: "Solve for X",  // Added for English
+        placeholder: "Your answer",  // Placeholder for input field
+        submitButton: "Submit",  // Text for submit button
     },
     sv: {
         question: "Vad är",
         correct: "Korrekt!",
         incorrect: "Fel, det rätta svaret var",
+        solveX: "Lös för X",  // Added for Swedish
+        placeholder: "Ditt svar",  // Placeholder for input field (Swedish)
+        submitButton: "Skicka",  // Text for submit button (Swedish)
     }
 };
 
@@ -54,18 +60,19 @@ function generateQuestion() {
         3: { maxNum: { '+': 10, '-': 6 }, operations: ['+', '-'], answerRange: [0, 15], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add more terms and subtraction (no negatives)
         4: { maxNum: { '+': 12, '-': 10 }, operations: ['+', '-'], answerRange: [0, 20], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add multiplication with small numbers
 		5: { maxNum: { '+': 12, '*': 3 }, operations: ['+', '*'], answerRange: [0, 20], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add multiplication with small numbers
-        6: { maxNum: { '+': 15, '-': 15, '*': 10 }, operations: ['+', '-', '*', '/'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add division
-		6: { maxNum: { '*': 10, '/': 5 }, operations: ['*', '/'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add division
-        7: { maxNum: { '+': 20, '-': 20, '*': 10, '/': 10, 'X': 10 }, operations: ['+', '-', '*', '/', 'X'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add solving for 'X'
-        8: { maxNum: { '+': 30, '-': 30, '*': 15, '/': 15, 'X': 20, '%': 20 }, operations: ['+', '-', '*', '/', 'X', '%'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add percentages
-        9: { maxNum: { '+': 50, '-': 50, '*': 20, '/': 20, 'X': 30, '%': 30 }, operations: ['+', '-', '*', '/', 'X', '%',], answerRange: [0, 100], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add square roots
-        10: { maxNum: { '+': 100, '-': 100, '*': 30, '/': 30, 'X': 40, '%': 50, 'sqrt': 100, '!' : 3}, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!'], answerRange: [0, 100], allowNegative: false, allowDecimalAnswer: false, terms: 4 },  // Reintroduce factorial
-        11: { maxNum: { '+': 100, '-': 100, '*': 50, '/': 50, 'X': 50, '%': 50, 'sqrt': 100, '!': 4 }, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!', '^'], answerRange: [-100, 100], allowNegative: true, allowDecimalAnswer: false, terms: 4 },  // Add exponentiation, allow negatives
-        12: { maxNum: { '+': 100, '-': 100, '*': 100, '/': 100, 'X': 50, '%': 50, 'sqrt': 100, '!': 5, '^': 5 }, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!', '^', '()'], answerRange: [-100, 100], allowNegative: true, allowDecimalAnswer: false, terms: 4 },  // Add parentheses with more complex terms
+		6: { maxNum: { 'X': 10 }, operations: ['+', 'X'], answerRange: [0, 20], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Introducing X
+        7: { maxNum: { '+': 15, '-': 15, '*': 10 }, operations: ['+', '-', '*', '/'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add division
+		8: { maxNum: { '*': 10, '/': 5 }, operations: ['*', '/'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add division
+        9: { maxNum: { '+': 20, '-': 20, '*': 10, '/': 10, 'X': 10 }, operations: ['+', '-', '*', '/', 'X'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add solving for 'X'
+        10: { maxNum: { '+': 30, '-': 30, '*': 15, '/': 15, 'X': 20, '%': 20 }, operations: ['+', '-', '*', '/', 'X', '%'], answerRange: [0, 50], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add percentages
+        11: { maxNum: { '+': 50, '-': 50, '*': 20, '/': 20, 'X': 30, '%': 30 }, operations: ['+', '-', '*', '/', 'X', '%',], answerRange: [0, 100], allowNegative: false, allowDecimalAnswer: false, terms: 3 },  // Add square roots
+        12: { maxNum: { '+': 100, '-': 100, '*': 30, '/': 30, 'X': 40, '%': 50, 'sqrt': 100, '!' : 3}, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!'], answerRange: [0, 100], allowNegative: false, allowDecimalAnswer: false, terms: 4 },  // Reintroduce factorial
+        13: { maxNum: { '+': 100, '-': 100, '*': 50, '/': 50, 'X': 50, '%': 50, 'sqrt': 100, '!': 4 }, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!', '^'], answerRange: [-100, 100], allowNegative: true, allowDecimalAnswer: false, terms: 4 },  // Add exponentiation, allow negatives
+        14: { maxNum: { '+': 100, '-': 100, '*': 100, '/': 100, 'X': 50, '%': 50, 'sqrt': 100, '!': 5, '^': 5 }, operations: ['+', '-', '*', '/', 'X', '%', 'sqrt', '!', '^', '()'], answerRange: [-100, 100], allowNegative: true, allowDecimalAnswer: false, terms: 4 },  // Add parentheses with more complex terms
     };
 
     const config = levelConfig[Math.min(currentLevel, 10)];
-	    let terms = [];
+	let terms = [];
 
     // Select the operation first to ensure the correct maxNum is used
     operation = config.operations[Math.floor(Math.random() * config.operations.length)];
@@ -189,12 +196,21 @@ function advanceLevel() {
 
 function update() {
     // Separate the question into an instruction and the actual operation
-    let instruction = translations[language].question; // "What is" or "Vad är"
+    let instruction;
     let mathExpression = currentQuestion;  // The actual numbers and operators
+	
+	    // Determine if the operation is solving for X
+    if (currentQuestion.includes('X')) {
+        instruction = translations[language].solveX;  // "Solve for X" in both languages
+    } else {
+        instruction = translations[language].question;  // "What is" or "Vad är" for other cases
+    }
 
     // Update the DOM
-    document.getElementById('instruction').textContent = `${instruction}`;  // First row with instruction
+    document.getElementById('instruction').textContent = `${instruction}?`;  // First row with instruction
     document.getElementById('math-expression').textContent = mathExpression;  // Second row with numbers and operators
+    document.getElementById('answer').placeholder = translations[language].placeholder;  // Update placeholder
+    document.getElementById('submit-button').textContent = translations[language].submitButton;  // Update submit button text
     document.getElementById('answer').value = '';  // Reset the input field
     document.getElementById('result').textContent = '';  // Clear previous result
     document.getElementById('answer').focus();  // Auto-focus input field
