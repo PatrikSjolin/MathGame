@@ -31,6 +31,8 @@ function generateQuestion() {
     for (let i = 0; i < numberOfTerms; i++) {
         terms.push(Math.floor(Math.random() * config.maxNum[operation]));
     }
+	
+	console.log(`Operation: ${operation}, Terms: ${terms}`);
 
     let answerMin = config.answerRange[0];
     let answerMax = config.answerRange[1];
@@ -151,5 +153,7 @@ document.getElementById('answer').addEventListener('keydown', function(event) {
     }
 });
 
-// Initialize the first question
-generateQuestion();
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize the first question
+    generateQuestion();
+});
