@@ -69,6 +69,10 @@ input {
     color: #e0e0e0;
 }
 
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
 button {
     background-color: #4CAF50;
     color: white;
