@@ -1,4 +1,4 @@
-const debugMode = false;
+const debugMode = true;
 
 if (debugMode) {
     console.log('Debug mode is ON.');
@@ -267,6 +267,9 @@ function checkAnswer() {
             // Keep the container full during the highlight
             document.getElementById('level-container').style.backgroundSize = '100% 100%';
 
+            // Reward player with a star or planet after completing a level
+            rewardPlayer();
+
             // Highlight the entire level container
             document.getElementById('level-container').classList.add('highlight');
             
@@ -299,6 +302,7 @@ function checkAnswer() {
 // Debug function to advance levels
 function advanceLevel() {
     currentLevel++;
+	rewardPlayer();
     document.getElementById('level').textContent = currentLevel;
     generateQuestion();
 }
@@ -351,7 +355,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	loadUserState();  // Load previous state if available
     generateQuestion();
 });
-
+let starsAndPlanets = [];  // Array to store the details of stars and planets
 function loadUserState() {
     const savedState = localStorage.getItem('mathGameState');
     if (savedState) {
@@ -360,8 +364,9 @@ function loadUserState() {
         correctStreak = userState.correctStreak || 0;
         questionHistory = userState.questionHistory || [];
 		language = userState.language || "en";  // Load the saved language, default to English
-		//changeLanguage(language);  // Apply the saved language
+		starsAndPlanets = userState.starsAndPlanets || [];
 		document.getElementById('language-selector').value = language;
+		loadStarsAndPlanets();
     }
 }
 
@@ -371,6 +376,7 @@ function saveUserState() {
         correctStreak: correctStreak,
         questionHistory: questionHistory,
         language: language,  // Save the selected language
+		starsAndPlanets: starsAndPlanets  // Save stars and planets
     };
     localStorage.setItem('mathGameState', JSON.stringify(userState));
 }
@@ -397,4 +403,80 @@ function toggleSettingsMenu() {
     } else {
         menu.style.display = 'none';
     }
+}
+
+function createStar() {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    
+    // Randomize size and position
+    const size = Math.random() * 4 + 2;  // Star sizes between 1 and 4 pixels
+    const posX = Math.random() * window.innerWidth;
+    const posY = Math.random() * window.innerHeight;
+    
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.top = `${posY}px`;
+    star.style.left = `${posX}px`;
+
+    // Add twinkle animation to the star
+    star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite ease-in-out`;
+    
+    document.getElementById('space-background').appendChild(star);
+	starsAndPlanets.push({ type: 'star', size, posX, posY });
+	saveUserState();
+}
+
+function createPlanet() {
+    const planet = document.createElement('div');
+    planet.classList.add('planet');
+    
+    // Randomize size and position
+    const size = Math.random() * 30 + 5;  // Planet sizes between 10 and 30 pixels
+    const posX = Math.random() * window.innerWidth;
+    const posY = Math.random() * window.innerHeight;
+
+    planet.style.width = `${size}px`;
+    planet.style.height = `${size}px`;
+    planet.style.top = `${posY}px`;
+    planet.style.left = `${posX}px`;
+
+    document.getElementById('space-background').appendChild(planet);
+	starsAndPlanets.push({ type: 'planet', size, posX, posY });
+	saveUserState();
+}
+
+function rewardPlayer() {
+    // Decide randomly between adding a star or planet
+    const rewardType = Math.random() < 0.7 ? 'star' : 'planet';  // 70% chance of star, 30% of planet
+    createStar();
+	createStar();
+	if(currentLevel % 5 == 0) {
+		createPlanet();
+	}
+}
+
+function loadStarsAndPlanets() {
+    starsAndPlanets.forEach(item => {
+        if (item.type === 'star') {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = `${item.size}px`;
+            star.style.height = `${item.size}px`;
+            star.style.top = `${item.posY}px`;
+            star.style.left = `${item.posX}px`;
+            star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite ease-in-out`;
+
+            document.getElementById('space-background').appendChild(star);
+        } else if (item.type === 'planet') {
+            const planet = document.createElement('div');
+            planet.classList.add('planet');
+            planet.style.width = `${item.size}px`;
+            planet.style.height = `${item.size}px`;
+            planet.style.top = `${item.posY}px`;
+            planet.style.left = `${item.posX}px`;
+
+            document.getElementById('space-background').appendChild(planet);
+        }
+    });
 }
