@@ -19,15 +19,27 @@
     </select>
 </div>
 
-<div class="info">
-    <p>Level: <span id="level">1</span></p>
-</div>
+ <!-- Level display -->
+    <div id="level-container">
+        <span id="level-label">Level: </span>
+        <span id="level">1</span>  <!-- This will be dynamically updated -->
+				    <!-- Progress bar -->
+		<div id="progress-container">
+			<div id="progress-bar"></div>
+		</div>
+    </div>
+	
+
 
 <div class="question-box">
     <p id="instruction"></p>  <!-- Instruction (e.g., "What is" or "Vad är") -->
     <p id="math-expression"></p>  <!-- Math expression (e.g., "5 + 3") -->
     <input type="number" id="answer" placeholder="Your answer">  <!-- Placeholder will be translated -->
     <button id="submit-button" onclick="checkAnswer()">Submit</button>  <!-- Button text will be translated -->
+	
+
+
+    <p class="result" id="result"></p>
 	
 	<div class="debug-element">
 		<button onclick="advanceLevel()">Debug: Advance Level</button>

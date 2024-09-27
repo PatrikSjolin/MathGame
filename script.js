@@ -81,7 +81,7 @@ function generateQuestion() {
 		9: { minNum: { '/': 2 }, maxNum: { '/': 20 }, operations: ['/'], answerRange: [0, 50], allowDecimalAnswer: false, terms: 2 },  // Add division
 		10: { minNum: { '+': 1, '-': 1, '*': 1, '/': 2, 'X': 1 }, maxNum: { '+': 15, '-': 15, '*': 10, '/': 20, 'X': 10 }, operations: ['+', '-', '*', '/', 'X'], answerRange: [0, 50], allowDecimalAnswer: false, terms: 3 },  // Doing X for more operators
 		11: { minNum: {'-': 1 }, maxNum: { '-': 10 }, operations: ['-'], answerRange: [-10, -1], allowDecimalAnswer: false, terms: 2 },  // Add division
-        12: { minNum: { '+': 2, '-': 2, '*': 1, '/': 1, 'X': 1 }, maxNum: { '+': 20, '-': 20, '*': 10, '/': 10, 'X': 10 }, operations: ['+', '-', '*', '/', 'X'], answerRange: [-20, 50], allowDecimalAnswer: false, terms: 3 },  // Add solving for 'X'
+        12: { minNum: { '+': 2, '-': 2, '*': -10, '/': -10, 'X': 1 }, maxNum: { '+': 20, '-': 20, '*': 10, '/': 10, 'X': 10 }, operations: ['+', '-', '*', '/', 'X'], answerRange: [-20, 50], allowDecimalAnswer: false, terms: 3 },  // Add solving for 'X'
         13: { minNum: { '%': 2 }, maxNum: { '%': 30 }, operations: ['%'], answerRange: [0, 100], allowDecimalAnswer: false, terms: 3 },  // Add percentages
         14: { minNum: { '+': 5, '-': 5, '*': 2, '/': 2, 'X': 3, '%': 3 }, maxNum: { '+': 50, '-': 50, '*': 20, '/': 20, 'X': 30, '%': 40 }, operations: ['+', '-', '*', '/', 'X', '%',], answerRange: [0, 100], allowDecimalAnswer: false, terms: 3 },  // Add square roots
         15: { minNum: { 'X': 4, '%': 5, 'sqrt': 3 }, maxNum: { 'X': 40, '%': 50, 'sqrt': 20 }, operations: ['X', '%', 'sqrt'], answerRange: [0, 100], allowDecimalAnswer: false, terms: 2 },  // Reintroduce factorial
@@ -189,14 +189,29 @@ function checkAnswer() {
         correctStreak++;
         document.getElementById('result').textContent = 'Correct!';
 
-        // Increase level every 4 correct answers
+        // Update the background-size to reflect progress (0% to 100%)
+        let progressPercentage = (correctStreak / 4) * 100;
+        document.getElementById('level-container').style.backgroundSize = `${progressPercentage}% 100%`;
+
         if (correctStreak >= 4) {
             currentLevel++;
             correctStreak = 0;
+
+            // Keep the container full during the highlight
+            document.getElementById('level-container').style.backgroundSize = '100% 100%';
+
+            // Highlight the entire level container
+            document.getElementById('level-container').classList.add('highlight');
+            
+            setTimeout(() => {
+                document.getElementById('level-container').classList.remove('highlight');
+                document.getElementById('level-container').style.backgroundSize = '0% 100%';  // Reset progress
+            }, 1000);  // Highlight lasts for 1 second
         }
     } else {
         document.getElementById('result').textContent = `${translations[language].incorrect} ${correctAnswer}.`;
         correctStreak = 0;
+        document.getElementById('level-container').style.backgroundSize = '0% 100%';  // Reset progress on wrong answer
     }
 
     setTimeout(generateQuestion, 1000);  // 50% reduced wait time before next question

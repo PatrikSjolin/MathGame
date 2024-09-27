@@ -4,12 +4,12 @@ body {
     background-color: #121212;  /* Dark background */
     color: #e0e0e0;  /* Light text for contrast */
     text-align: center;
-    padding: 40px;  /* Increased padding for more space */
+    padding: 40px;
 }
 
 h1 {
     margin-top: 20px;
-    font-size: 3em;  /* Larger heading */
+    font-size: 3em;
     color: #ffffff;  /* White text for heading */
 }
 
@@ -25,60 +25,54 @@ h1 {
 
 .language-selector select {
     padding: 10px;
-    font-size: 20px;  /* Increased font size */
+    font-size: 20px;
     border: 1px solid #555;
     border-radius: 5px;
-    background-color: #333;  /* Dark background for input */
-    color: #e0e0e0;  /* Light text */
+    background-color: #333;
+    color: #e0e0e0;
     cursor: pointer;
 }
 
-#question {
-    font-size: 28px;  /* Increased font size for the question */
-    margin-bottom: 20px;
-    color: #ffffff;  /* Bright white for visibility */
-}
-
-.info p {
-    font-size: 24px;  /* Increased font size for the level */
-    color: #b0b0b0;  /* Softer color for level text */
-}
-
+/* Question box styling */
 .question-box {
     margin: 30px auto;
     padding: 10px;
-    background-color: #1e1e1e;  /* Darker background for boxes */
-    width: 500px;  /* Increased width */
+    background-color: #1e1e1e;
+    width: 500px;
     border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);  /* Softer white shadow */
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
+}
+
+#instruction {
+    font-size: 26px;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+#math-expression {
+    font-size: 26px;
+    color: #ffcc00;  /* Yellowish color */
+    margin-bottom: 10px;
 }
 
 input, button {
     padding: 15px;
-    font-size: 22px;  /* Larger font for inputs and buttons */
+    font-size: 22px;
     margin: 10px;
     border-radius: 5px;
 }
 
 input {
-    padding: 15px;
-    font-size: 22px;
-    margin: 10px;
-    border-radius: 5px;
-    background-color: #333;  /* Dark input background */
+    background-color: #333;
     border: 1px solid #555;
-    color: #e0e0e0;  /* Light input text */
-    overflow: hidden;  /* This will hide any overflow content */
-	-moz-appearance: textfield;  /* Firefox */
-    -webkit-appearance: none;  /* Chrome, Safari, Edge, Opera */
-    appearance: none;
+    color: #e0e0e0;
+    -webkit-appearance: none;
 }
 
 button {
-    background-color: #4CAF50;  /* Green button */
+    background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
 }
 
@@ -88,35 +82,38 @@ button:hover {
 
 .result {
     margin-top: 20px;
-    font-size: 24px;  /* Larger result text */
-    color: #ffcc00;  /* Bright color for results */
+    font-size: 24px;
+    color: #ffcc00;
 }
 
-#instruction {
-    font-size: 26px;  /* Font size for the instruction */
-    margin-bottom: 10px;
-    color: #ffffff;  /* Bright white for visibility */
+#level-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #333;  /* Background color for the container */
+    border: 2px solid #555;   /* Add a border around the progress bar */
+    color: white;
+    font-size: 1.5em;
+    margin: 0 auto 20px auto;
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    height: 30px;  /* Adjusted height */
+    background: linear-gradient(to right, #4CAF50 0%, #333 0%);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s ease;
 }
 
-#math-expression {
-    font-size: 28px;  /* Larger font size for the math expression */
-    color: #ffcc00;  /* Bright color for the math expression */
+/* Highlight and scale the entire level container */
+.highlight {
+    animation: highlight-level 1s ease-in-out;  /* Shorten the animation duration to 1 second */
 }
 
-#debug-output {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #1e1e1e;  /* Dark background for debug output */
-    border-radius: 10px;
-}
-
-#debug-output h3 {
-    margin-top: 20px;
-    color: #ffcc00;  /* Bright color for section headings */
-}
-
-#debug-output p {
-    font-size: 18px;  /* Slightly larger text for readability */
-    margin: 5px 0;
-    color: #cccccc;  /* Light color for text */
+@keyframes highlight-level {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
 }
