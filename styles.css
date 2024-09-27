@@ -1,8 +1,10 @@
 /* Dark theme setup */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #121212;  /* Dark background */
-    color: #e0e0e0;  /* Light text for contrast */
+    background-color: #121212;
+    /* Dark background */
+    color: #e0e0e0;
+    /* Light text for contrast */
     text-align: center;
     padding: 40px;
 }
@@ -10,7 +12,8 @@ body {
 h1 {
     margin-top: 20px;
     font-size: 3em;
-    color: #ffffff;  /* White text for heading */
+    color: #ffffff;
+    /* White text for heading */
 }
 
 #language-selector {
@@ -21,9 +24,12 @@ h1 {
     background-color: #333;
     color: #e0e0e0;
     cursor: pointer;
-    appearance: none;  /* Remove default select styling */
-    -webkit-appearance: none;  /* Remove default select styling in WebKit browsers */
-    -moz-appearance: none;  /* Remove default select styling in Firefox */
+    appearance: none;
+    /* Remove default select styling */
+    -webkit-appearance: none;
+    /* Remove default select styling in WebKit browsers */
+    -moz-appearance: none;
+    /* Remove default select styling in Firefox */
 }
 
 /* Question box styling */
@@ -44,11 +50,13 @@ h1 {
 
 #math-expression {
     font-size: 26px;
-    color: #ffcc00;  /* Yellowish color */
+    color: #ffcc00;
+    /* Yellowish color */
     margin-bottom: 10px;
 }
 
-input, button {
+input,
+button {
     padding: 15px;
     font-size: 22px;
     margin: 10px;
@@ -93,7 +101,8 @@ button:hover {
     margin: 0 auto 20px auto;
     position: relative;
     width: 100%;
-    max-width: 400px;  /* Set a max-width for the level container */
+    max-width: 400px;
+    /* Set a max-width for the level container */
     height: 30px;
     background: linear-gradient(to right, #4CAF50 0%, #333 0%);
     background-size: 0% 100%;
@@ -103,13 +112,22 @@ button:hover {
 
 /* Highlight and scale the entire level container */
 .highlight {
-    animation: highlight-level 1s ease-in-out;  /* Shorten the animation duration to 1 second */
+    animation: highlight-level 1s ease-in-out;
+    /* Shorten the animation duration to 1 second */
 }
 
 @keyframes highlight-level {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* Media query for smaller screens (like iPhones) */
@@ -121,18 +139,23 @@ button:hover {
     }
 
     /* Make input and button full-width on small screens */
-    input, button {
-        width: 100%;  /* Full width */
+    input,
+    button {
+        width: 100%;
+        /* Full width */
         margin: 5px 0;
     }
 
     /* Keep max-width for input field and level container */
-    input, #level-container {
-        max-width: 90%;  /* Limit to 90% of the screen width */
+    input,
+    #level-container {
+        max-width: 90%;
+        /* Limit to 90% of the screen width */
     }
 
     /* Adjust font sizes for smaller screens */
-    #instruction, #math-expression {
+    #instruction,
+    #math-expression {
         font-size: 20px;
     }
 
@@ -144,7 +167,8 @@ button:hover {
 #settings {
     position: absolute;
     top: 20px;
-    right: 20px;  /* Move the settings button to the right of the screen */
+    right: 20px;
+    /* Move the settings button to the right of the screen */
     display: inline-block;
     z-index: 10;
 }
@@ -154,9 +178,11 @@ button:hover {
     color: white;
     border: none;
     cursor: pointer;
-    padding: 10px 20px;  /* Increase the padding for a larger button */
+    padding: 10px 20px;
+    /* Increase the padding for a larger button */
     border-radius: 5px;
-    font-size: 16px;  /* Make the font size bigger */
+    font-size: 16px;
+    /* Make the font size bigger */
     z-index: 10;
 }
 
@@ -168,16 +194,19 @@ button:hover {
     position: absolute;
     top: 60px;
     right: 0;
-    width: 200px;  /* Make the overlay wider */
+    width: 200px;
+    /* Make the overlay wider */
     background-color: #1e1e1e;
-    padding: 20px;  /* Increase padding to give more space inside */
+    padding: 20px;
+    /* Increase padding to give more space inside */
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
     display: none;
     z-index: 20;
 }
 
-#settings-menu select, #settings-menu button {
+#settings-menu select,
+#settings-menu button {
     margin-bottom: 20px;
     width: 100%;
 }
@@ -197,7 +226,8 @@ button:hover {
 
 #level-container {
     position: relative;
-    z-index: 1;  /* Lower the z-index so it doesn’t interfere with the settings menu */
+    z-index: 1;
+    /* Lower the z-index so it doesn’t interfere with the settings menu */
 }
 
 #space-background {
@@ -208,10 +238,12 @@ button:hover {
     height: 100%;
     background-color: black;
     overflow: hidden;
-    z-index: -1;  /* Ensure this is behind all game elements */
+    z-index: -1;
+    /* Ensure this is behind all game elements */
 }
 
-.star, .planet {
+.star,
+.planet {
     position: absolute;
     border-radius: 50%;
     background-color: white;
@@ -220,16 +252,29 @@ button:hover {
 }
 
 .planet {
-    background-color: #f7b731;  /* Planets can have colors like yellow, blue, etc. */
+    background-color: #f7b731;
+    /* Planets can have colors like yellow, blue, etc. */
     box-shadow: 0px 0px 10px 5px rgba(255, 255, 255, 0.5);
 }
 
 @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 @keyframes twinkle {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
 }

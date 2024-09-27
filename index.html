@@ -1,58 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Learning Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-<div id="space-background"></div>
-<h1>Math Learning Game</h1>
+    <div id="space-background"></div>
+    <h1>Math Learning Game</h1>
 
-<!-- Styled Language Selector -->
-<div id="settings">
-    <button id="settings-wheel" onclick="toggleSettingsMenu()">Settings</button>
-    
-    <div id="settings-menu" style="display: none;">
-        <select id="language-selector" class="language-selector" onchange="changeLanguage(this.value)">
-            <option value="en">English</option>
-            <option value="sv">Swedish</option>
-        </select>
-        <button id="reset-button" onclick="confirmReset()">Reset Progress</button>
+    <!-- Styled Language Selector -->
+    <div id="settings">
+        <button id="settings-wheel" onclick="toggleSettingsMenu()">Settings</button>
+
+        <div id="settings-menu" style="display: none;">
+            <select id="language-selector" class="language-selector" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="sv">Swedish</option>
+            </select>
+            <button id="reset-button" onclick="confirmReset()">Reset Progress</button>
+        </div>
     </div>
-</div>
 
-<!-- Level display -->
-<div id="level-container">
-	<span id="level-label">Level: </span>
-	<span id="level">1</span>  <!-- This will be dynamically updated -->
-				<!-- Progress bar -->
-	<div id="progress-container">
-		<div id="progress-bar"></div>
-	</div>
-</div>
+    <!-- Level display -->
+    <div id="level-container">
+        <span id="level-label">Level: </span>
+        <span id="level">1</span> <!-- This will be dynamically updated -->
+        <!-- Progress bar -->
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
 
-<div class="question-box">
-    <p id="instruction"></p>  <!-- Instruction (e.g., "What is" or "Vad är") -->
-    <p id="math-expression"></p>  <!-- Math expression (e.g., "5 + 3") -->
-    <input type="number" id="answer" placeholder="Your answer">  <!-- Placeholder will be translated -->
-    <button id="submit-button" onclick="checkAnswer()">Submit</button>  <!-- Button text will be translated -->
+    <div class="question-box">
+        <p id="instruction"></p> <!-- Instruction (e.g., "What is" or "Vad är") -->
+        <p id="math-expression"></p> <!-- Math expression (e.g., "5 + 3") -->
+        <input type="number" id="answer" placeholder="Your answer"> <!-- Placeholder will be translated -->
+        <button id="submit-button" onclick="checkAnswer()">Submit</button> <!-- Button text will be translated -->
 
 
-    <p class="result" id="result"></p>
-	
-	<div class="debug-element">
-		<button onclick="advanceLevel()">Debug: Advance Level</button>
-		<button onclick="reduceLevel()">Debug: Reduce Level</button>
-		<button onclick="generateDebugAnswers()">Debug: Generate Questions</button>
-	</div>
-    <p class="result" id="result"></p>
-</div>
+        <p class="result" id="result"></p>
 
-<!-- Debug Output Div -->
-<div id="debug-output" class="debug-element"></div>
+        <div class="debug-element">
+            <button onclick="advanceLevel()">Debug: Advance Level</button>
+            <button onclick="reduceLevel()">Debug: Reduce Level</button>
+            <button onclick="generateDebugAnswers()">Debug: Generate Questions</button>
+        </div>
+        <p class="result" id="result"></p>
+    </div>
 
-<script src="script.js"></script>
+    <!-- Debug Output Div -->
+    <div id="debug-output" class="debug-element"></div>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
