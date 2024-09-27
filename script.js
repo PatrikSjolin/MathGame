@@ -1,4 +1,4 @@
-const debugMode = true;
+const debugMode = false;
 
 if (debugMode) {
     console.log('Debug mode is ON.');
