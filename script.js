@@ -1,3 +1,20 @@
+const debugMode = true;
+
+if (debugMode) {
+    console.log('Debug mode is ON.');
+}
+
+const debugElements = document.getElementsByClassName('debug-element');
+
+for (let i = 0; i < debugElements.length; i++) {
+    if (debugMode) {
+        debugElements[i].style.display = 'block';
+    } else {
+        debugElements[i].style.display = 'none';
+    }
+}
+
+
 let currentLevel = 1;
 let correctStreak = 0;
 let currentQuestion, correctAnswer;
@@ -152,11 +169,16 @@ function generateQuestion() {
 					break;
 			}
 		}
+	if(debugMode) {
 	console.log(`Operation: ${operation}, Terms: ${terms}, Correct Answer: ${correctAnswer}`);
 	setTimeout(400);
+	}
 	} while (correctAnswer < answerMin || correctAnswer > answerMax || (!config.allowDecimalAnswer && !Number.isInteger(correctAnswer)));
 	
-	console.log(`Operation: ${operation}, Terms: ${terms}`);
+	if(debugMode){
+		console.log(`Operation: ${operation}, Terms: ${terms}`);
+	}
+	
 	update();
 }
 
@@ -200,7 +222,7 @@ function update() {
     }
 
     // Update the DOM
-    document.getElementById('instruction').textContent = `${instruction}?`;  // First row with instruction
+    document.getElementById('instruction').textContent = `${instruction}`;  // First row with instruction
     document.getElementById('math-expression').textContent = mathExpression;  // Second row with numbers and operators
     document.getElementById('answer').placeholder = translations[language].placeholder;  // Update placeholder
     document.getElementById('submit-button').textContent = translations[language].submitButton;  // Update submit button text

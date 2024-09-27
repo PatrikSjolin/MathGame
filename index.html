@@ -28,15 +28,16 @@
     <p id="math-expression"></p>  <!-- Math expression (e.g., "5 + 3") -->
     <input type="number" id="answer" placeholder="Your answer">  <!-- Placeholder will be translated -->
     <button id="submit-button" onclick="checkAnswer()">Submit</button>  <!-- Button text will be translated -->
-	<!--
-    <button onclick="advanceLevel()">Debug: Advance Level</button>
-    <button onclick="generateDebugAnswers()">Debug: Generate Questions</button>
-	-->
+	
+	<div class="debug-element">
+		<button onclick="advanceLevel()">Debug: Advance Level</button>
+		<button onclick="generateDebugAnswers()">Debug: Generate Questions</button>
+	</div>
     <p class="result" id="result"></p>
 </div>
 
 <!-- Debug Output Div -->
-<!--div id="debug-output"></div-->
+<div id="debug-output" class="debug-element"></div>
 
 <script src="script.js"></script>
 </body>
