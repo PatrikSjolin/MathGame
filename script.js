@@ -1,4 +1,4 @@
-const debugMode = false;
+const debugMode = true;
 
 if (debugMode) {
     console.log('Debug mode is ON.');
@@ -14,7 +14,7 @@ for (let i = 0; i < debugElements.length; i++) {
     }
 }
 
-
+let questionHistory = [];  // Array to store previously answered questions with a correctness flag
 let currentLevel = 1;
 let correctStreak = 0;
 let currentQuestion, correctAnswer;
@@ -52,16 +52,19 @@ function generateDebugAnswers() {
     let outputDiv = document.getElementById('debug-output');
     outputDiv.innerHTML = ''; // Clear previous output
 
-    for (let level = 1; level <= 18; level++) {
+    for (let level = 1; level <= 19; level++) {
         currentLevel = level;  // Set the current level
         outputDiv.innerHTML += `<h3>Level ${level}</h3>`; // Display level heading
         console.log(`NEW LEVEL ${currentLevel}`);
-		setTimeout(2000);
+		setTimeout(1000);
         for (let i = 0; i < 10; i++) {
             generateQuestion();  // Generate a question for the current level
+			historyEntry = questionHistory.find(q => q.question === currentQuestion);
+			historyEntry.correct = true;
             // Append the question and its answer to the output div
             outputDiv.innerHTML += `<p>${currentQuestion}, Answer: ${correctAnswer}</p>`;
         }
+		update();
     }
 }
 
@@ -86,8 +89,9 @@ function generateQuestion() {
         14: { minNum: { '+': 5, '-': 5, '*': 2, '/': 2, 'X': 3, '%': 3 }, maxNum: { '+': 50, '-': 50, '*': 20, '/': 20, 'X': 30, '%': 40 }, operations: ['+', '-', '*', '/', 'X', '%',], answerRange: [0, 100], allowDecimalAnswer: false, terms: 3 },  // Add square roots
         15: { minNum: { 'X': 4, '%': 5, 'sqrt': 3 }, maxNum: { 'X': 40, '%': 50, 'sqrt': 20 }, operations: ['X', '%', 'sqrt'], answerRange: [0, 100], allowDecimalAnswer: false, terms: 2 },  // Reintroduce factorial
 		16: { minNum: { 'sqrt': 3 }, maxNum: { 'sqrt': 20 }, operations: ['sqrt'], answerRange: [0, 100], allowDecimalAnswer: false, terms: 2 },  // Reintroduce factorial
-        17: { minNum: { '*': 3, '!': 2 }, maxNum: { '*': 12, '!': 4 }, operations: ['*', '!'], answerRange: [-100, 100], allowDecimalAnswer: false, terms: 4 },  // Add exponentiation, allow negatives
-        18: { minNum: {'+': 10, '^': 2 }, maxNum: { '+': 100, '^': 5 }, operations: ['+', '^'], answerRange: [-100, 100], allowDecimalAnswer: false, terms: 4 },  // Add parentheses with more complex terms
+        17: { minNum: { '*': 3, '!': 1 }, maxNum: { '*': 12, '!': 4 }, operations: ['*', '!'], answerRange: [-100, 100], allowDecimalAnswer: false, terms: 4 },  // Add exponentiation, allow negatives
+        18: { minNum: {'+': 10, '^': 2 }, maxNum: { '+': 50, '^': 5 }, operations: ['+', '^'], answerRange: [-100, 100], allowDecimalAnswer: false, terms: 4 },  // Add parentheses with more complex terms
+		19: { minNum: { '+': -30, '-': -30, '*': -12, '/': -12, '%': 0, '!': 0, 'X': -12, '^': 5 }, maxNum: { '+': 30, '-': 30, '*': 12, '/': 12, '%': 100, '!': 6, 'X': 12, '^': 5 }, operations: ['+', '-', '*', '/', '%', '!', 'X', '^'], answerRange: [-200, 200], allowDecimalAnswer: false, terms: 4 },  // Add parentheses with more complex terms
     };
 	
 	const levelCount = Object.keys(levelConfig).length;
@@ -104,10 +108,12 @@ function generateQuestion() {
     let answerMin = config.answerRange[0];
     let answerMax = config.answerRange[1];
 	
+	let historyEntry = null;  // Define historyEntry outside the loop
+	let historicRetries = 0;
 	do {
 		terms = [];
 		operators = [];
-		
+		historicRetries++;
 	    for (let i = 0; i < numberOfTerms; i++) {
 			let min = config.minNum[operation] || 0;  // Default to 0 if no minNum is defined
             let max = config.maxNum[operation] || 10; // Default to 10 if no maxNum is defined
@@ -169,16 +175,22 @@ function generateQuestion() {
 					break;
 			}
 		}
-	if(debugMode) {
-	console.log(`Operation: ${operation}, Terms: ${terms}, Correct Answer: ${correctAnswer}`);
-	setTimeout(400);
-	}
-	} while (correctAnswer < answerMin || correctAnswer > answerMax || (!config.allowDecimalAnswer && !Number.isInteger(correctAnswer)));
+		
+		 // Check the question history
+		 historyEntry = questionHistory.find(q => q.question === currentQuestion);
+		
+		if(debugMode) {
+			console.log(`Retry: ${historicRetries}, Operation: ${operation}, Terms: ${terms}, Correct Answer: ${correctAnswer}`);
+			setTimeout(400);
+		}
+	} while ((historyEntry && historyEntry.correct && historicRetries < 10) || correctAnswer < answerMin || correctAnswer > answerMax || (!config.allowDecimalAnswer && !Number.isInteger(correctAnswer)));
 	
 	if(debugMode){
 		console.log(`Operation: ${operation}, Terms: ${terms}`);
 	}
 	
+	// Store the generated question in history
+    questionHistory.push({ question: currentQuestion, answer: correctAnswer, correct: false });
 	update();
 }
 
@@ -188,6 +200,12 @@ function checkAnswer() {
     if (userAnswer === parseFloat(correctAnswer)) {
         correctStreak++;
         document.getElementById('result').textContent = 'Correct!';
+		
+		// Find the question in history and mark it as correct
+        let historyEntry = questionHistory.find(q => q.question === currentQuestion);
+        if (historyEntry) {
+            historyEntry.correct = true;  // Mark it as correct
+        }
 
         // Update the background-size to reflect progress (0% to 100%)
         let progressPercentage = (correctStreak / 4) * 100;
@@ -210,6 +228,13 @@ function checkAnswer() {
         }
     } else {
         document.getElementById('result').textContent = `${translations[language].incorrect} ${correctAnswer}.`;
+		
+		// Mark the question as incorrect in history
+        let historyEntry = questionHistory.find(q => q.question === currentQuestionKey);
+        if (historyEntry) {
+            historyEntry.correct = false;  // Mark it as incorrect
+        }
+		
         correctStreak = 0;
         document.getElementById('level-container').style.backgroundSize = '0% 100%';  // Reset progress on wrong answer
     }
