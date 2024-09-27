@@ -118,7 +118,9 @@ function generateQuestion() {
 	
 	let historyEntry = null;  // Define historyEntry outside the loop
 	let historicRetries = 0;
+	let failed;
 	do {
+		failed = false;
 		terms = [];
 		operators = [];
 		historicRetries++;
@@ -147,7 +149,7 @@ function generateQuestion() {
 				correctAnswer = eval(tempQuestion.replace('^', '**')); // Evaluate the expression				
 				
 				if(!config.allowDecimalAnswer && !Number.isInteger(correctAnswer))
-					continue;
+					failed = true;
 				
 				currentQuestion = 'X';
 				
@@ -171,7 +173,7 @@ function generateQuestion() {
             correctAnswer = num1;
 			let ans = eval(num1 + operation + num2);
 			if(!config.allowDecimalAnswer && !Number.isInteger(ans))
-				continue;
+				failed = true;
             currentQuestion = `X ${operation} ${num2} = ${ans}`;
 		} else if (operation === 'sqrt') {
 			// Square root of perfect squares
@@ -218,6 +220,7 @@ function generateQuestion() {
 		 historyEntry = questionHistory.find(q => q.question === currentQuestion);
 		
 		if(debugMode) {
+			console.log(failed);
 			console.log(`Retry: ${historicRetries}, Operation: ${operation}, Terms: ${terms}, Correct Answer: ${correctAnswer}`);
 			console.log((historyEntry && historyEntry.correct && historicRetries < 10));
 			console.log(correctAnswer < answerMin);
@@ -225,7 +228,7 @@ function generateQuestion() {
 			console.log(!config.allowDecimalAnswer && !Number.isInteger(correctAnswer));
 			setTimeout(400);
 		}
-	} while ((historyEntry && historyEntry.correct && historicRetries < 10) || correctAnswer < answerMin || correctAnswer > answerMax || (!config.allowDecimalAnswer && !Number.isInteger(correctAnswer)));
+	} while (failed || (historyEntry && historyEntry.correct && historicRetries < 10) || correctAnswer < answerMin || correctAnswer > answerMax || (!config.allowDecimalAnswer && !Number.isInteger(correctAnswer)));
 	
 	if(debugMode){
 		console.log(`Operation: ${operation}, Terms: ${terms}`);
@@ -296,6 +299,13 @@ function checkAnswer() {
 // Debug function to advance levels
 function advanceLevel() {
     currentLevel++;
+    document.getElementById('level').textContent = currentLevel;
+    generateQuestion();
+}
+
+// Debug function to advance levels
+function reduceLevel() {
+    currentLevel--;
     document.getElementById('level').textContent = currentLevel;
     generateQuestion();
 }
