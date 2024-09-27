@@ -46,6 +46,7 @@ const translations = {
 function changeLanguage(selectedLanguage) {
     language = selectedLanguage;
     update();  // Update the UI to reflect the new language
+	saveUserState();
 }
 
 function generateDebugAnswers() {
@@ -287,7 +288,8 @@ function checkAnswer() {
 		exrtaTime = 1000;
         document.getElementById('level-container').style.backgroundSize = '0% 100%';  // Reset progress on wrong answer
     }
-
+	
+	saveUserState();
     setTimeout(generateQuestion, animationTimer + exrtaTime);
 }
 
@@ -304,7 +306,7 @@ function update() {
     let mathExpression = currentQuestion;  // The actual numbers and operators
 	
 	    // Determine if the operation is solving for X
-    if (currentQuestion.includes('X')) {
+    if (currentQuestion !== undefined && currentQuestion.includes('X')) {
         instruction = translations[language].solveX;  // "Solve for X" in both languages
     } else {
         instruction = translations[language].question;  // "What is" or "Vad är" for other cases
@@ -318,7 +320,9 @@ function update() {
     document.getElementById('answer').value = '';  // Reset the input field
     document.getElementById('result').textContent = '';  // Clear previous result
     document.getElementById('answer').focus();  // Auto-focus input field
-    document.getElementById('level').textContent = currentLevel;  // Update the current level
+    document.getElementById('level').textContent = ' ' + currentLevel;  // Update the current level
+	let progressPercentage = (correctStreak / correctAnswersRequiredToLevelUp) * 100;
+	document.getElementById('level-container').style.backgroundSize = `${progressPercentage}% 100%`;
 }
 
 function factorial(n) {
@@ -334,5 +338,53 @@ document.getElementById('answer').addEventListener('keydown', function(event) {
 
 document.addEventListener("DOMContentLoaded", function() {
     // Initialize the first question
+	loadUserState();  // Load previous state if available
     generateQuestion();
 });
+
+function loadUserState() {
+    const savedState = localStorage.getItem('mathGameState');
+    if (savedState) {
+        const userState = JSON.parse(savedState);
+        currentLevel = userState.currentLevel || 1;
+        correctStreak = userState.correctStreak || 0;
+        questionHistory = userState.questionHistory || [];
+		language = userState.language || "en";  // Load the saved language, default to English
+		//changeLanguage(language);  // Apply the saved language
+		document.getElementById('language-selector').value = language;
+    }
+}
+
+function saveUserState() {
+    const userState = {
+        currentLevel: currentLevel,
+        correctStreak: correctStreak,
+        questionHistory: questionHistory,
+        language: language,  // Save the selected language
+    };
+    localStorage.setItem('mathGameState', JSON.stringify(userState));
+}
+
+function confirmReset() {
+    const confirmReset = confirm("Are you sure you want to reset all progress? This action cannot be undone.");
+    if (confirmReset) {
+        resetProgress();
+    }
+}
+
+function resetProgress() {
+    // Clear the saved progress from localStorage
+    localStorage.removeItem('mathGameState');
+    
+    // Reload the page to start fresh
+    location.reload();
+}
+
+function toggleSettingsMenu() {
+    const menu = document.getElementById('settings-menu');
+    if (menu.style.display === 'none') {
+        menu.style.display = 'block';
+    } else {
+        menu.style.display = 'none';
+    }
+}

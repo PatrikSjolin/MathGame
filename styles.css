@@ -13,24 +13,17 @@ h1 {
     color: #ffffff;  /* White text for heading */
 }
 
-.language-selector {
-    margin-bottom: 20px;
-}
-
-.language-selector label {
-    font-size: 20px;
-    margin-right: 10px;
-    color: #b0b0b0;  /* Softer color for label text */
-}
-
-.language-selector select {
+#language-selector {
     padding: 10px;
-    font-size: 20px;
+    font-size: 16px;
     border: 1px solid #555;
     border-radius: 5px;
     background-color: #333;
     color: #e0e0e0;
     cursor: pointer;
+    appearance: none;  /* Remove default select styling */
+    -webkit-appearance: none;  /* Remove default select styling in WebKit browsers */
+    -moz-appearance: none;  /* Remove default select styling in Firefox */
 }
 
 /* Question box styling */
@@ -146,4 +139,63 @@ button:hover {
     .result {
         font-size: 20px;
     }
+}
+
+#settings {
+    position: absolute;
+    top: 20px;
+    right: 20px;  /* Move the settings button to the right of the screen */
+    display: inline-block;
+    z-index: 10;
+}
+
+#settings-wheel {
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;  /* Increase the padding for a larger button */
+    border-radius: 5px;
+    font-size: 16px;  /* Make the font size bigger */
+    z-index: 10;
+}
+
+#settings-wheel:hover {
+    background-color: #555;
+}
+
+#settings-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;  /* Make the overlay wider */
+    background-color: #1e1e1e;
+    padding: 20px;  /* Increase padding to give more space inside */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 20;
+}
+
+#settings-menu select, #settings-menu button {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+#reset-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#reset-button:hover {
+    background-color: #d32f2f;
+}
+
+#level-container {
+    position: relative;
+    z-index: 1;  /* Lower the z-index so it doesn’t interfere with the settings menu */
 }
