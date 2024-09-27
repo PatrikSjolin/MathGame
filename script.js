@@ -355,30 +355,39 @@ document.addEventListener("DOMContentLoaded", function () {
     loadUserState();  // Load previous state if available
     generateQuestion();
 });
+
 let starsAndPlanets = [];  // Array to store the details of stars and planets
 function loadUserState() {
-    const savedState = localStorage.getItem('mathGameState');
-    if (savedState) {
-        const userState = JSON.parse(savedState);
-        currentLevel = userState.currentLevel || 1;
-        correctStreak = userState.correctStreak || 0;
-        questionHistory = userState.questionHistory || [];
-        language = userState.language || "en";  // Load the saved language, default to English
-        starsAndPlanets = userState.starsAndPlanets || [];
+    
+    const savedSiteSettingsState = localStorage.getItem('siteSettings');
+    if(savedSiteSettingsState) {
+        const siteSettings = JSON.parse(savedSiteSettingsState);
+        language = siteSettings.language || "en";
         document.getElementById('language-selector').value = language;
+    }
+    const savedGameState = localStorage.getItem('gameState');
+    if (savedGameState) {
+        const gameState = JSON.parse(savedGameState);
+        currentLevel = gameState.currentLevel || 1;
+        correctStreak = gameState.correctStreak || 0;
+        questionHistory = gameState.questionHistory || [];
+        starsAndPlanets = gameState.starsAndPlanets || [];
         loadStarsAndPlanets();
     }
 }
 
 function saveUserState() {
-    const userState = {
+    const siteSettings = {
+      language: language  
+    };
+    const gameState = {
         currentLevel: currentLevel,
         correctStreak: correctStreak,
         questionHistory: questionHistory,
-        language: language,  // Save the selected language
         starsAndPlanets: starsAndPlanets  // Save stars and planets
     };
-    localStorage.setItem('mathGameState', JSON.stringify(userState));
+    localStorage.setItem('gameState', JSON.stringify(gameState));
+    localStorage.setItem('siteSettings', JSON.stringify(siteSettings));
 }
 
 function confirmReset() {
@@ -390,7 +399,7 @@ function confirmReset() {
 
 function resetProgress() {
     // Clear the saved progress from localStorage
-    localStorage.removeItem('mathGameState');
+    localStorage.removeItem('gameState');
 
     // Reload the page to start fresh
     location.reload();
