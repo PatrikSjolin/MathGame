@@ -68,6 +68,8 @@ function generateDebugAnswers() {
     }
 }
 
+const correctAnswersRequiredToLevelUp = 5;
+
 function generateQuestion() {
     let num1, num2, num3, operation;
 
@@ -82,16 +84,16 @@ function generateQuestion() {
 		7: { minNum: { '+': 0 }, maxNum: { '+': 10 }, operations: ['+'], answerRange: [0, 20], allowDecimalAnswer: false, allowX: 1, terms: 2 },  // Introducing X
         8: { minNum: { '*': 1, '/': 1 }, maxNum: { '*': 10, '/': 5 }, operations: ['*', '/'], answerRange: [0, 100], allowDecimalAnswer: false, allowX: 0, terms: 2 },  // Add division
 		9: { minNum: { '/': 2 }, maxNum: { '/': 20 }, operations: ['/'], answerRange: [0, 50], allowDecimalAnswer: false, allowX: 0, terms: 2 },  // Practice division
-		10: { minNum: { '+': 1, '*': 1, '/': 2 }, maxNum: { '+': 15, '*': 10, '/': 20 }, operations: ['+', '-', '*', '/'], answerRange: [0, 50], allowDecimalAnswer: false, allowX: 1, terms: 3 },  // Doing X for more operators
+		10: { minNum: { '+': 1, '*': 1, '/': 2 }, maxNum: { '+': 15, '*': 10, '/': 20 }, operations: ['+', '*', '/'], answerRange: [0, 50], allowDecimalAnswer: false, allowX: 1, terms: 3 },  // Doing X for more operators
 		11: { minNum: {'-': 1 }, maxNum: { '-': 10 }, operations: ['-'], answerRange: [-10, -1], allowDecimalAnswer: false, allowX: 0, terms: 2 },  // Add negative results
         12: { minNum: { '+': 2, '-': 2, '*': -10, '/': -10 }, maxNum: { '+': 20, '-': 20, '*': 10, '/': 10 }, operations: ['+', '-', '*', '/'], answerRange: [-20, 50], allowDecimalAnswer: false, allowX: 0.5, terms: 3 },  // Solve for X and get potentially negative results
         13: { minNum: { '%': 2 }, maxNum: { '%': 30 }, operations: ['%'], answerRange: [0, 100], allowDecimalAnswer: false, allowX: 0, terms: 3 },  // Add percentages
         14: { minNum: { '+': 5, '-': 5, '*': 2, '/': 2, '%': 3 }, maxNum: { '+': 50, '-': 50, '*': 20, '/': 20, '%': 40 }, operations: ['+', '-', '*', '/', '%',], answerRange: [0, 100], allowDecimalAnswer: false, allowX: 0, terms: 3 },  // Add square roots
         15: { minNum: { '%': 5, 'sqrt': 3 }, maxNum: { '%': 50, 'sqrt': 20 }, operations: ['%', 'sqrt'], answerRange: [0, 100], allowDecimalAnswer: false, allowX: 0, terms: 2 },  // Introduce sqrt
 		16: { minNum: { 'sqrt': 3 }, maxNum: { 'sqrt': 20 }, operations: ['sqrt'], answerRange: [0, 100], allowDecimalAnswer: false, allowX: 0, terms: 2 },  // Practice sqrt
-        17: { minNum: { '*': 3, '!': 1 }, maxNum: { '*': 12, '!': 4 }, operations: ['*', '!'], answerRange: [-100, 100], allowDecimalAnswer: false, allowX: 0, terms: 4 },  // Add factorial
+        17: { minNum: { '*': 3, '!': 1 }, maxNum: { '*': 12, '!': 4 }, operations: ['*', '!'], answerRange: [-100, 100], allowDecimalAnswer: false, allowX: 0, terms: 3 },  // Add factorial
         18: { minNum: {'+': 10, '^': 2 }, maxNum: { '+': 50, '^': 5 }, operations: ['+', '^'], answerRange: [-100, 100], allowDecimalAnswer: false, allowX: 0, terms: 4 },  // Add Exponentiation
-		19: { minNum: { '+': -30, '-': -30, '*': -12, '/': -12, '%': 0, '!': 0, '^': 5 }, maxNum: { '+': 30, '-': 30, '*': 12, '/': 12, '%': 100, '!': 6, '^': 5 }, operations: ['+', '-', '*', '/', '%', '!', '^'], answerRange: [-200, 200], allowDecimalAnswer: false, allowX: 0, terms: 4 },  // Boss-level
+		19: { minNum: { '+': -30, '-': -30, '*': -12, '/': -12, '%': 0, '!': 0, '^': 5 }, maxNum: { '+': 30, '-': 30, '*': 12, '/': 12, '%': 100, '!': 6, '^': 5 }, operations: ['+', '-', '*', '/', '%', '!', '^'], answerRange: [-200, 200], allowDecimalAnswer: false, allowX: 0.5, terms: 4 },  // Boss-level
     };
 	
 	const levelCount = Object.keys(levelConfig).length;
@@ -197,6 +199,8 @@ const animationTimer = 1000;
 function checkAnswer() {
     let userAnswer = parseFloat(document.getElementById('answer').value);
 
+	let exrtaTime = 0;
+
     if (userAnswer === parseFloat(correctAnswer)) {
         correctStreak++;
         document.getElementById('result').textContent = 'Correct!';
@@ -208,10 +212,10 @@ function checkAnswer() {
         }
 
         // Update the background-size to reflect progress (0% to 100%)
-        let progressPercentage = (correctStreak / 4) * 100;
+        let progressPercentage = (correctStreak / correctAnswersRequiredToLevelUp) * 100;
         document.getElementById('level-container').style.backgroundSize = `${progressPercentage}% 100%`;
 
-        if (correctStreak >= 4) {
+        if (correctStreak >= correctAnswersRequiredToLevelUp) {
             currentLevel++;
             correctStreak = 0;
 
@@ -230,16 +234,17 @@ function checkAnswer() {
         document.getElementById('result').textContent = `${translations[language].incorrect} ${correctAnswer}.`;
 		
 		// Mark the question as incorrect in history
-        let historyEntry = questionHistory.find(q => q.question === currentQuestionKey);
+        let historyEntry = questionHistory.find(q => q.question === correctAnswer);
         if (historyEntry) {
             historyEntry.correct = false;  // Mark it as incorrect
         }
 		
         correctStreak = 0;
+		exrtaTime = 1000;
         document.getElementById('level-container').style.backgroundSize = '0% 100%';  // Reset progress on wrong answer
     }
 
-    setTimeout(generateQuestion, animationTimer);  // 50% reduced wait time before next question
+    setTimeout(generateQuestion, animationTimer + exrtaTime);
 }
 
 // Debug function to advance levels
